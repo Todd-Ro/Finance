@@ -9,5 +9,10 @@ public class Main {
         double p = Binomial.calcProbUp(u, d, r);
         //p should equal 0.6
         System.out.println(p);
+        double S = 34;
+        double X = 30;
+        double c = Binomial.currentValueTwoPeriodCall(u, d, r, S, X);
+        // c should be approximately 7.85
+        System.out.println(c);
     }
 }
