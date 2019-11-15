@@ -1,61 +1,57 @@
 package com.company;
 
+import static com.company.FinMathOps.sumArray;
+
 public class ReturnRate extends NPV {
 
-    double[][] datePriceDiv;
+    // It is intended that dates be entered in chronological order starting with the earliest
+    double[][] datePriceDiv; //Input date in mm-dd-yy, then price, then dividend
     double[][] timePriceDiv;
     //double r;
     //double[] PVTable;
 
 
-
-    public void setCashFlows(double[][] cashFlows) {
-        /*
-        Enter pairs; First value is time and second is flow.
-         */
-        this.cashFlows = cashFlows;
+    public void setDatePriceDiv(double[][] datePriceDiv) {
+        this.datePriceDiv = datePriceDiv;
     }
 
-    public void setR(double r) {
-        this.r = r;
+    public void setTimePriceDiv(double[][] timePriceDiv) {
+        this.timePriceDiv = timePriceDiv;
     }
 
-    public double[] generatePVTable() {
-        int len = cashFlows.length;
-        if (len == 0) {
-            return null;
-        }
-        else {
-            double[] ret = new double[len];
-            for (int i = 0; i < len; i++) {
-                double value = cashFlows[i][1];
-                ret[i] = value * Math.pow(1+r,-1*cashFlows[i][0]);
-                //TODO: Fix so that this is discounted to current value
-            }
-            PVTable = ret;
-            return ret;
-        }
-    };
 
-    double sumArray(double[] thisArray) {
-        int len = thisArray.length;
-        if (len == 0) {
-            return 0;
+
+    public double[][] setTimePriceDivByTransfer() {
+        int len = datePriceDiv.length;
+        timePriceDiv = new double[len][3];
+        for (int i = 0; i < len; i++) {
+            double[] dateNums = FinMathOps.getFirstThree(datePriceDiv[i]);
+            Date d = Date.dateFromMMDDYYDoubles(dateNums);
+            double t = d.findTime();
+            timePriceDiv[i][0] = t;
+            timePriceDiv[i][1] = datePriceDiv[i][3];
+            timePriceDiv[i][2] = datePriceDiv[i][4];
         }
-        else {
-            double sum = 0;
-            for (int j = 0; j < len; j++) {
-                sum += thisArray[j];
-            }
-            return sum;
-        }
+        return timePriceDiv;
     }
 
-    public double findNPV() {
-        if (PVTable.length == 0) {
-            generatePVTable();
-        }
-        return sumArray(PVTable);
-    }
+    double[][] periodReturns;
+    /*  Represents the return from one entered date to the next, divided into capital gain component first
+        and then dividend gain component. For example, if the asset rose in value 15% from one entered date
+        to the next, the capital gain would be .15, regardless of how far apart in time the two dates were.
+    */
+
+    /*double[][] findPeriodReturns() {
+        // Assumes datePriceDiv has been initialized properly
+
+    }*/
+
+
+
+
+
+
+
+   
 
 }

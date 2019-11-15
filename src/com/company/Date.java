@@ -6,10 +6,21 @@ public class Date {
     int month;
     int day;
     boolean inLeapYear;
+
     public static int[] daysInMonths = {31,28,31,30,31,30,31,31,30,31,30,31};
+    public static int[] daysSinceYearStartList = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+    public static int[] daysSinceLeapYearStartList = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366};
+
+    int daysSinceYearStart;
+    double time; // Represents years since calendar start; June 30 1977 would be about 1977.5.
 
     public void setInLeapYear(boolean inLeapYear) {
         this.inLeapYear = inLeapYear;
+    }
+    public boolean setInLeapYear() {
+        boolean ret = isLeap(this.year);
+        this.inLeapYear = ret;
+        return ret;
     }
 
     public int getYear() {
@@ -65,6 +76,60 @@ public class Date {
         d.setYear(y);
         d.setInLeapYear(isLeap(y));
         return d;
+    }
+
+    public static Date dateFromMMDDYYDoubles(double[] input) {
+        int[] intDates = new int[input.length];
+        for (int i = 0; i < input.length; i++) {
+            intDates[i] = (int) Math.round(input[i]);
+        }
+        return dateFromMMDDYY(intDates);
+    }
+
+    static int[] findDaysSinceYearStartList() {
+        //Generates the same values that are in daysSinceYearStart
+        int[] ret = new int[13];
+        int j = 0;
+        for (int i = 0; i<12; i++) {
+            ret[i] = j;
+            j += daysInMonths[i];
+        }
+        ret[12] = j;
+        return ret;
+    }
+
+    static int[] findLeapDaysSinceYearStartList() {
+        int[] ret = new int[13];
+        ret[0] = daysSinceYearStartList[0];
+        ret[1] = daysSinceYearStartList[1];
+        for (int i=2; i<=12; i++) {
+            ret[i] = (daysSinceYearStartList[i] + 1);
+        }
+        return ret;
+    }
+
+    int findDaysSinceYearStart() {
+        //Will return 0 for January 1st
+        int m = month - 1;
+        int ret;
+        boolean b = setInLeapYear();
+        double t;
+        if (b) {
+            ret = daysSinceLeapYearStartList[m] + this.day - 1;
+            t = ret / 366.0;
+        }
+        else {
+            ret = daysSinceYearStartList[m] + this.day - 1;
+            t = ret / 365.0;
+        }
+        this.daysSinceYearStart = ret;
+        this.time = this.year + t;
+        return ret;
+    }
+
+    double findTime() {
+        findDaysSinceYearStart();
+        return this.time;
     }
 
     /*int DaysSince(Date dPast) {

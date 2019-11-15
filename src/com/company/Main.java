@@ -29,5 +29,23 @@ public class Main {
         System.out.println(sum); // Should have value close to breakeven
 
         System.out.println(FinMathOps.sumArray(Date.daysInMonths)); // Should be 365
+        System.out.println(Arrays.toString(Date.findDaysSinceYearStartList()));
+        System.out.println(Arrays.toString(Date.findLeapDaysSinceYearStartList()));
+        int[] midYear = {7,3,77};
+        Date dat = Date.dateFromMMDDYY(midYear);
+        System.out.println(dat.findTime());
+        double[] midYearDub = {7.0, 3.0, 77.0};
+        Date dat2 = Date.dateFromMMDDYYDoubles(midYearDub);
+        System.out.println(dat2.findTime());
+
+        double[][] pricesTable = {{12,31,3, 27.37, 0}, {8,23,4, 27.24, .08}, {11,15,4, 27.39, 3.08},
+                {12,31,4, 26.72, 0}};
+        System.out.println(Arrays.toString(FinMathOps.getFirstThree(pricesTable[0])));
+        ReturnRate returnRateAsis = new ReturnRate();
+        returnRateAsis.setDatePriceDiv(pricesTable);
+        double[][] pricesTableTimes = returnRateAsis.setTimePriceDivByTransfer();
+        System.out.println(Arrays.toString(pricesTableTimes[0]) + Arrays.toString(pricesTableTimes[1]) +
+                Arrays.toString(pricesTableTimes[2]) + Arrays.toString(pricesTableTimes[3]));
+
     }
 }

@@ -29,4 +29,17 @@ public class FinMathOps {
             return sum;
         }
     }
+
+
+    public static double[] getFirstThree(double[] entry) {
+        // Gets the first three entries from an array with at least three entries.
+        if (entry.length < 3) {
+            return null;
+        }
+        double[] ret = new double[3];
+        ret[0] = entry[0];
+        ret[1] = entry[1];
+        ret[2] = entry[2];
+        return ret;
+    }
 }
