@@ -46,6 +46,13 @@ public class Main {
         double[][] pricesTableTimes = returnRateAsis.setTimePriceDivByTransfer();
         System.out.println(Arrays.toString(pricesTableTimes[0]) + Arrays.toString(pricesTableTimes[1]) +
                 Arrays.toString(pricesTableTimes[2]) + Arrays.toString(pricesTableTimes[3]));
-
+        double[][] returnsOverTime = returnRateAsis.findPeriodReturns();
+        System.out.println(Arrays.toString(returnsOverTime[0]) + Arrays.toString(returnsOverTime[1]) +
+                Arrays.toString(returnsOverTime[2]));
+        double[][] totalReturns = returnRateAsis.findOverallReturns();
+        System.out.println(Arrays.toString(totalReturns[0]) + Arrays.toString(totalReturns[1]) +
+                Arrays.toString(totalReturns[2]));
+        System.out.println(returnRateAsis.findTotalReturnMult());
+        System.out.println(Arrays.toString(returnRateAsis.findFinalMarketCap()));
     }
 }

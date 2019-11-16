@@ -1,5 +1,8 @@
 package com.company;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class FinMathOps {
 
     public static double sumArray(double[] thisArray) {
@@ -41,5 +44,13 @@ public class FinMathOps {
         ret[1] = entry[1];
         ret[2] = entry[2];
         return ret;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
