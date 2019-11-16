@@ -63,15 +63,19 @@ public class Date {
     }
 
     public static Date dateFromMMDDYY(int[] input) {
+        //Method assumes year between 0 and 99 is between 1970 (70) and 2069 (69)
         Date d = new Date();
         d.setMonth(input[0]);
         d.setDay(input[1]);
         int y;
-        if (input[2] >= 70) {
+        if ((input[2] >= 70) && (input[2] < 100)) {
             y = input[2] + 1900;
         }
-        else {
+        else if (input[2] < 70) {
             y = input[2] + 2000;
+        }
+        else {
+            y = input[2]; // Assumes YYYY was used instead of YY if 100 or larger
         }
         d.setYear(y);
         d.setInLeapYear(isLeap(y));
@@ -137,5 +141,46 @@ public class Date {
 
         }
     }*/
+
+    public static int findDayOfYearFromMonthAndDay(int[] monthDayYear) {
+        //Returns day of year. input month, then day, then year. For month 2, day 1, returns 32
+       int year = monthDayYear[2];
+       int month = monthDayYear[0];
+       int day = monthDayYear[1];
+       if (isLeap(year) == false) {
+           return (daysSinceYearStartList[month-1] + day);
+       }
+       else {
+           return (daysSinceLeapYearStartList[month-1] + day);
+       }
+    }
+
+    public static int[] findMonthAndDayFromDayOfYear(int day, int year) {
+        // Returns month, then day. For February 1, input 32 then the year
+        if (isLeap(year) == false) {
+            int[] monthInfo =
+                    FinMathOps.findLargestValueBelowTargetInAscendingArray(daysSinceYearStartList, day-1);
+            int monthIndex = monthInfo[1];
+            return new int[] {monthIndex+1, day - monthInfo[0]};
+        }
+        else {
+            int[] monthInfo =
+                    FinMathOps.findLargestValueBelowTargetInAscendingArray(daysSinceLeapYearStartList, day-1);
+            int monthIndex = monthInfo[1];
+            return new int[] {monthIndex-1, day - monthInfo[0]};
+        }
+    }
+
+    public static int findDayNumberFromTime(double time) {
+        int year = (int) time;
+        double dayPortion = time % 1;
+        if (isLeap(year) == false) {
+            return (int) (Math.round(dayPortion*365) + 1);
+            // 1 is added because time is indexed from January first being year + 0.0
+        }
+        else {
+            return (int) (Math.round(dayPortion*366) + 1);
+        }
+    }
 
 }
