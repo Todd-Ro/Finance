@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.BlackScholes.CallValuation;
+
 import java.util.Arrays;
 
 public class Main {
@@ -75,5 +77,10 @@ public class Main {
                 Arrays.toString(totalReturns[2]));
         System.out.println(returnRateAsis.findTotalReturnMult());
         System.out.println(Arrays.toString(returnRateAsis.findFinalMarketCap()));
+        System.out.println();
+
+        System.out.println(CallValuation.cumulStandardNormDist(-1.96));
+        System.out.println(CallValuation.cumulStandardNormDist(1.96));
+        System.out.println(CallValuation.cumulStandardNormDist(-1.645));
     }
 }
