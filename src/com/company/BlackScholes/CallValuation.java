@@ -1,6 +1,23 @@
 package com.company.BlackScholes;
 
+import static java.lang.StrictMath.*;
+
 public class CallValuation {
+
+    public static double callValuation(double T, double v, double S, double K, double r) {
+        /*
+        C is the call option's present value, T is time to maturity, v is the volatility (standard deviation per unit
+        of time) of the asset, S is the spot price of the asset, K is the strike price,
+        and r id the risk-free interest rate.
+         */
+        double PV = K*exp(-r*T);
+        double d1 = (1/(v*sqrt(T))) * (log(S/K) + T*(r+(pow(v,2))/2));
+        double d2 = d1 - v * sqrt(T);
+        double Nd1 = cumulStandardNormDist(d1);
+        double Nd2 = cumulStandardNormDist(d2);
+        double C = (Nd1*S) - (Nd2*PV);
+        return C;
+    }
 
     public static double cumulStandardNormDist(double x) {
         //Piecewise approximation for the cumulative standard normal distribution
