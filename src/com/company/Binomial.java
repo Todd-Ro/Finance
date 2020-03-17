@@ -29,8 +29,8 @@ public class Binomial {
 
     public static double calcProbUp(double u, double d, double r) {
         /* Returns the probability that an asset price will increase if markets are risk-neutral,
-        the risk-free rate is r, and the asset's price is either multiplied by cUp if it increases
-        or by cDown if it decreases.
+        the risk-free rate is r, and the asset's price is either multiplied by cUp (also known as u) if it increases
+        or by cDown (also known as d) if it decreases.
         u should be greater than 1, while d should be between 0 and 1.
          */
 
@@ -76,8 +76,9 @@ public class Binomial {
 
     public static double afterOnePeriodCallValuation(double u, double d, double r, double S, double X) {
         /*
-        The extra values here that are not found in calcProbUp are S, the current asset price, and c, the call value
-        of an option.
+        Returns c, the call value of an option.
+        The extra values here that are not found in calcProbUp are S, the current asset price, and X, the exercise
+        price of an option.
         The goal of this function is to find the expected value, and therefore the risk-neutral valuation, of an option
         with exercise price X on an asset with current value S after one period in which the asset either appreciates
         to a value of uS or depreciates to a value of dS.
@@ -86,7 +87,8 @@ public class Binomial {
         double p = calcProbUp(u, d, r);
         double cPlus = Math.max(u*S - X, 0); // cPlus is the exercise value if the asset increases in value.
         double cMinus = Math.max(d*S - X, 0); // cMinus is the exercise value of the asset decreases in value, often 0.
-        return round(p*cPlus + (1-p) * cMinus, 13);
+        double c = p*cPlus + (1-p) * cMinus;
+        return round(c, 13);
     }
 
     public static double currentValueOnePeriodCall(double u, double d, double r, double S, double X) {
